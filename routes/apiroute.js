@@ -1,9 +1,10 @@
 const router = require("express").Router();
-const db = require("../db/db.json");
+let db = require("../db/db.json");
 const shortid = require('shortid');
 const fs = require("fs");
 const path = require("path");
 router.get("/notes", function (req, res) {
+
     res.json(db)
 });
 router.post("/notes", function (req, res) {
@@ -25,12 +26,15 @@ router.delete("/notes/:id", function (req, res) {
     //     if (error) {
     //         console.log(error)
     //     } else {
-            let out = db.filter((note) => {
-               return note.id !== req.params.id
+        console.log ("delete")
+            db = db.filter((note) =>  note.id !== req.params.id);
+            
+            fs.writeFile(path.join(__dirname, "../db/db.json"), JSON.stringify(db),err =>{
+                if (err)throw err
+                console.log('res')
+                res.sendStatus(200)
             });
-            fs.writeFileSync(path.join(__dirname, "../db/db.json"), JSON.stringify(out));
-            console.log (out)
-            return res.json(out);
+            
 
         // }
     // });
