@@ -26,7 +26,7 @@ router.delete("/notes/:id", function (req, res) {
     //         console.log(error)
     //     } else {
             let out = db.filter((note) => {
-                note.id !== req.params.id
+               return note.id !== req.params.id
             });
             fs.writeFileSync(path.join(__dirname, "../db/db.json"), JSON.stringify(out));
             console.log (out)
